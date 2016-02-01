@@ -20,6 +20,11 @@ public class Player : MonoBehaviour {
     public int playerNumber;
 
     /// <summary>
+    /// Number of hits allowed per player
+    /// </summary>
+    public int startingHits;
+
+    /// <summary>
     /// The number of hits a player can take
     /// </summary>
     public int hitsLeft;
@@ -68,7 +73,10 @@ public class Player : MonoBehaviour {
 
         //Set appropriate start color
         playerColor = PRIVATE_playerColor;
-	}
+
+        //Set hits left
+        hitsLeft = startingHits;
+    }
 	
 	// Update is called once per frame
 	void Update () {

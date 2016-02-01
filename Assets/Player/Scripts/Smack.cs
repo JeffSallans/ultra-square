@@ -8,7 +8,7 @@ using System.Collections;
 public class Smack : MonoBehaviour {
 
     /// <summary>
-    /// Time it takes before the next trail can be placed
+    /// Time it takes before the action is available, in seconds
     /// </summary>
     public float cooldown;
 
@@ -18,9 +18,14 @@ public class Smack : MonoBehaviour {
     public GameObject smackHitBox;
 
     /// <summary>
-    /// Time left until next use.  PRIVATE variable used for debugging.
+    /// How long the hitbox should be enabled, in seconds
     /// </summary>
-    public float PRIVATE_timeUntilReady;
+    public float showHitBoxDuration;
+
+    /// <summary>
+    /// If action is ready to use
+    /// </summary>
+    public bool actionIsReady;
 
     private Player player;
     private PlayerInput input;
@@ -38,31 +43,41 @@ public class Smack : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
-        //Unable to take action
-        if (PRIVATE_timeUntilReady > 0)
-        {
-            PRIVATE_timeUntilReady -= Time.deltaTime;
-        }
         //Check if action is used
-        else
+        if (actionIsReady)
         {
             if (input.getActionPressDown())
             {
                 smackHitBox.SetActive(true);
-            }
-            else
-            {
-                //Last frame was using the ability
-                if (smackHitBox.activeSelf)
-                {
-                    PRIVATE_timeUntilReady = cooldown;
-                }
-
-                smackHitBox.SetActive(false);
+                StartCoroutine(hideSmackHitbox());
+                StartCoroutine(startCooldown());
             }
         }
+    }
 
+    /// <summary>
+    /// Function for coroutines.
+    /// Call to start the cooldown on an ability
+    /// MODIFIES: actionIsReady
+    /// </summary>
+    /// <returns>Type used by Coroutines</returns>
+    IEnumerator startCooldown()
+    {
+        actionIsReady = false;
+        yield return new WaitForSeconds(cooldown);
+        actionIsReady = true;
+    }
+
+    /// <summary>
+    /// Function for coroutines.
+    /// Wait showHitBoxDuration number of seconds and then hide smack hitbox.
+    /// MODIFIES: smackHitBox.active
+    /// </summary>
+    /// <returns>Type used by Coroutines</returns>
+    IEnumerator hideSmackHitbox()
+    {
+        yield return new WaitForSeconds(showHitBoxDuration);
+        smackHitBox.SetActive(false);
     }
 }
 
