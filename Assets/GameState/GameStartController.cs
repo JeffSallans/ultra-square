@@ -23,8 +23,13 @@ public class GameStartController : MonoBehaviour {
     /// </summary>
     public float countDownIntervalDuration;
 
+    private GameState gameState;
+
 	// Use this for initialization
 	void Start () {
+
+        gameState = GameState.getCurrentGameState();
+
         StartCoroutine(startMatch());
 	}
 	
@@ -36,6 +41,9 @@ public class GameStartController : MonoBehaviour {
     IEnumerator startMatch()
     {
         gameTimerTextObject.GetComponent<Animator>().SetTrigger("hide");
+        //Disable movement
+        gameState.pinkPlayer.gameObject.GetComponent<PlayerMovement>().enabled = false;
+        gameState.greenPlayer.gameObject.GetComponent<PlayerMovement>().enabled = false;
 
         gameObject.GetComponent<Text>().text = startingCount.ToString();
         gameObject.GetComponent<Animator>().SetTrigger("fadeout");
@@ -56,6 +64,10 @@ public class GameStartController : MonoBehaviour {
         yield return new WaitForSeconds(countDownIntervalDuration);
         gameObject.GetComponent<Text>().text = "FIGHT";
         gameObject.GetComponent<Animator>().SetTrigger("fadeout");
+
+        //Enable movement
+        gameState.pinkPlayer.gameObject.GetComponent<PlayerMovement>().enabled = true;
+        gameState.greenPlayer.gameObject.GetComponent<PlayerMovement>().enabled = true;
 
         yield return new WaitForSeconds(countDownIntervalDuration);
         gameTimerTextObject.GetComponent<Animator>().SetTrigger("fadein");
