@@ -65,6 +65,39 @@ public class Player : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// True when player cannot be hit
+    /// </summary>
+    public bool PRIVATE_isInvulnerable;
+
+    /// <summary>
+    /// How long player in invulnerable in seconds
+    /// </summary>
+    public float invulnerableDuration;
+
+    /// <summary>
+    /// Wrapper for managing animations
+    /// </summary>
+    public bool isInvulnerable
+    {
+        get
+        {
+            return PRIVATE_isInvulnerable;
+        }
+        set
+        {
+            PRIVATE_isInvulnerable = value;
+            animator.SetBool("isInvulnerable", value);
+
+
+            if (PRIVATE_isInvulnerable)
+            {
+                StopCoroutine(turnOffInvul());
+                StartCoroutine(turnOffInvul());
+            }
+        }
+    }
+
     private Animator animator;
 
 	// Use this for initialization
@@ -82,4 +115,16 @@ public class Player : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    /// <summary>
+    /// Coroutine function
+    /// Turns off invulnerability
+    /// MODIFIES: PRIVATE_isInvulnerable
+    /// </summary>
+    /// <returns>Something used by Coroutines</returns>
+    IEnumerator turnOffInvul()
+    {
+        yield return new WaitForSeconds(invulnerableDuration);
+        isInvulnerable = false;
+    }
 }

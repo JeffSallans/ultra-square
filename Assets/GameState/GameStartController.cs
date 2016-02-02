@@ -8,7 +8,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class GameStartController : MonoBehaviour {
 
-    public GameObject gameStartText;
+    /// <summary>
+    /// Object to enable after the countdown finishes
+    /// </summary>
+    public GameObject gameTimerTextObject;
 
     /// <summary>
     /// The initial text to display
@@ -32,25 +35,29 @@ public class GameStartController : MonoBehaviour {
 
     IEnumerator startMatch()
     {
+        gameTimerTextObject.GetComponent<Animator>().SetTrigger("hide");
+
         gameObject.GetComponent<Text>().text = startingCount.ToString();
-        //Hold execution for X seconds
-        yield return new WaitForSeconds(countDownIntervalDuration);
-        startingCount--;
-        gameObject.GetComponent<Text>().text = startingCount.ToString();
+        gameObject.GetComponent<Animator>().SetTrigger("fadeout");
 
         //Hold execution for X seconds
         yield return new WaitForSeconds(countDownIntervalDuration);
         startingCount--;
         gameObject.GetComponent<Text>().text = startingCount.ToString();
+        gameObject.GetComponent<Animator>().SetTrigger("fadeout");
 
         //Hold execution for X seconds
         yield return new WaitForSeconds(countDownIntervalDuration);
         startingCount--;
         gameObject.GetComponent<Text>().text = startingCount.ToString();
+        gameObject.GetComponent<Animator>().SetTrigger("fadeout");
 
         //Hold execution for X seconds
         yield return new WaitForSeconds(countDownIntervalDuration);
         gameObject.GetComponent<Text>().text = "FIGHT";
         gameObject.GetComponent<Animator>().SetTrigger("fadeout");
+
+        yield return new WaitForSeconds(countDownIntervalDuration);
+        gameTimerTextObject.GetComponent<Animator>().SetTrigger("fadein");
     }
 }

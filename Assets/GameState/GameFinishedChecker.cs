@@ -36,27 +36,60 @@ public class GameFinishedChecker : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    
-        if (gameState.pinkPlayer.hitsLeft < 0)
+
+        //Do not update game state if determined
+        if (gameState.winningPlayer != null) return;
+
+        if (gameState.pinkPlayer.hitsLeft <= 0)
         {
             gameState.winningPlayer = PlayerColor.Green;
             StartCoroutine(endMatch());
         }
         
-        if (gameState.greenPlayer.hitsLeft < 0)
+        if (gameState.greenPlayer.hitsLeft <= 0)
         {
-            gameState.winningPlayer = PlayerColor.Green;
+            gameState.winningPlayer = PlayerColor.Pink;
+            StartCoroutine(endMatch());
+        }
+
+        if (gameState.timeLeft <= 0)
+        {
+            //If green has more
+            if (gameState.greenPlayer.hitsLeft > gameState.pinkPlayer.hitsLeft)
+            {
+                gameState.winningPlayer = PlayerColor.Green;
+            }
+            //If pink has more
+            else if (gameState.greenPlayer.hitsLeft < gameState.pinkPlayer.hitsLeft)
+            {
+                gameState.winningPlayer = PlayerColor.Pink;
+            }
+            //Otherwise it is a draw
+
             StartCoroutine(endMatch());
         }
     }
 
     IEnumerator endMatch()
     {
+        //Disable abilities
+        gameState.pinkPlayer.gameObject.GetComponent<Smack>().enabled = false;
+        gameState.greenPlayer.gameObject.GetComponent<Smack>().enabled = false;
+
         gameOverText.SetActive(true);
+
+        var originalTimeScale = Time.timeScale;
         Time.timeScale = gameOverTimeScale;
 
         //Hold execution for X seconds
         yield return new WaitForSeconds(showGameOverDuration);
+
+        //Remove reference to avoid breaking things
+        gameState.greenPlayer = null;
+        gameState.pinkPlayer = null;
+
+        //Reset time scale
+        Time.timeScale = originalTimeScale;
 
         Application.LoadLevel(afterMatchScene);
     }

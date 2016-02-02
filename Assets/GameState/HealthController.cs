@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages the health displayed
 /// </summary>
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Image))]
 public class HealthController : MonoBehaviour {
 
     /// <summary>
@@ -19,12 +20,12 @@ public class HealthController : MonoBehaviour {
 
     private GameState gameState;
 
-    private SpriteRenderer spriteRenderer;
+    private Image image;
 
 	// Use this for initialization
 	void Start () {
         gameState = GameState.getCurrentGameState();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        image = gameObject.GetComponent<Image>();
     }
 	
 	// Update is called once per frame
@@ -41,6 +42,6 @@ public class HealthController : MonoBehaviour {
         }
 
         var overHealthThreshold = player.hitsLeft > hitThreshold;
-        spriteRenderer.enabled = overHealthThreshold;
+        image.enabled = overHealthThreshold;
     }
 }

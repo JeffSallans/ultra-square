@@ -34,8 +34,12 @@ public class GameState : MonoBehaviour {
 
         //If another Input Manager is detected, remove it
         gameObject.name = "NEW_" + OBJECT_NAME;
-        var oldInputManagerObject = GameObject.Find(OBJECT_NAME);
-        Destroy(oldInputManagerObject);
+        var oldObject = GameObject.Find(OBJECT_NAME);
+
+        if (oldObject != null)
+        {
+            Destroy(oldObject);
+        }
 
         //Assign name
         gameObject.name = OBJECT_NAME;

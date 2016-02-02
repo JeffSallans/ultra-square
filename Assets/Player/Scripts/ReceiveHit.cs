@@ -22,12 +22,18 @@ public class ReceiveHit : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D attackBox)
     {
+        //Cannot hit self
         if (attackBox.gameObject == player.GetComponent<Smack>().smackHitBox) return;
 
+        //Cannot hit invulnerable
+        if (player.isInvulnerable) return;
+
         player.hitsLeft--;
+        player.isInvulnerable = true;
 
         var animator = gameObject.GetComponent<Animator>();
 
         animator.SetTrigger("playerHit");
+
     }
 }
