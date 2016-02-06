@@ -27,7 +27,8 @@ public class GameState : MonoBehaviour {
     public static string OBJECT_NAME = "GameState";
 
     // Use this for initialization
-    void Start () {
+    void Awake()
+    {
 
         //Keep state over multiple screens
         DontDestroyOnLoad(gameObject);
@@ -42,6 +43,12 @@ public class GameState : MonoBehaviour {
 
         //Assign name
         gameObject.name = OBJECT_NAME;
+    }
+
+    void Start () {
+
+            //Set time left on new game
+            timeLeft = gameDuration;
     }
 	
 	// Update is called once per frame

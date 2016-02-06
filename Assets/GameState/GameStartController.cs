@@ -33,7 +33,7 @@ public class GameStartController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        gameState = GameState.getCurrentGameState();
+
     }
 
     IEnumerator startMatch()
@@ -41,6 +41,8 @@ public class GameStartController : MonoBehaviour {
         gameTimerTextObject.GetComponent<Animator>().SetTrigger("hide");
 
         yield return new WaitForSeconds(.05f);
+
+        gameState = GameState.getCurrentGameState();
 
         //Disable movement
         gameState.pinkPlayer.gameObject.GetComponent<PlayerMovement>().enabled = false;
