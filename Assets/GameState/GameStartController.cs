@@ -28,19 +28,20 @@ public class GameStartController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        gameState = GameState.getCurrentGameState();
-
         StartCoroutine(startMatch());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        gameState = GameState.getCurrentGameState();
+    }
 
     IEnumerator startMatch()
     {
         gameTimerTextObject.GetComponent<Animator>().SetTrigger("hide");
+
+        yield return new WaitForSeconds(.05f);
+
         //Disable movement
         gameState.pinkPlayer.gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameState.greenPlayer.gameObject.GetComponent<PlayerMovement>().enabled = false;

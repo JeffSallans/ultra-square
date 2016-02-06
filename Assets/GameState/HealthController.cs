@@ -18,18 +18,17 @@ public class HealthController : MonoBehaviour {
     /// </summary>
     public PlayerColor targetPlayer;
 
-    private GameState gameState;
-
     private Image image;
 
 	// Use this for initialization
 	void Start () {
-        gameState = GameState.getCurrentGameState();
         image = gameObject.GetComponent<Image>();
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        var gameState = GameState.getCurrentGameState();
 
         Player player;
         if (targetPlayer == PlayerColor.Green)

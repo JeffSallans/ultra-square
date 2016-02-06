@@ -33,7 +33,6 @@ public class GameState : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         //If another Input Manager is detected, remove it
-        gameObject.name = "NEW_" + OBJECT_NAME;
         var oldObject = GameObject.Find(OBJECT_NAME);
 
         if (oldObject != null)
@@ -56,6 +55,13 @@ public class GameState : MonoBehaviour {
     /// <returns></returns>
     public static GameState getCurrentGameState()
     {
+        var gameObjectBeforeInitFinishes = GameObject.Find("NEW_" + GameState.OBJECT_NAME);
+
+        if (gameObjectBeforeInitFinishes != null)
+        {
+            return gameObjectBeforeInitFinishes.GetComponent<GameState>();
+        }
+
         return GameObject.Find(GameState.OBJECT_NAME).GetComponent<GameState>();
     }
 }

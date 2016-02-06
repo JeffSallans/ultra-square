@@ -78,11 +78,19 @@ public class GameFinishedChecker : MonoBehaviour {
 
         gameOverText.SetActive(true);
 
+        //Slow player to give finished effect
+        gameState.greenPlayer.speed = gameState.greenPlayer.speed / 2f;
+        gameState.pinkPlayer.speed = gameState.pinkPlayer.speed / 2f;
+
         var originalTimeScale = Time.timeScale;
         Time.timeScale = gameOverTimeScale;
 
         //Hold execution for X seconds
         yield return new WaitForSeconds(showGameOverDuration);
+
+        //Slow player to give finished effect
+        gameState.greenPlayer.speed = gameState.greenPlayer.speed * 2f;
+        gameState.pinkPlayer.speed = gameState.pinkPlayer.speed * 2f;
 
         //Remove reference to avoid breaking things
         gameState.greenPlayer = null;
