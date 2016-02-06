@@ -22,7 +22,15 @@ public class TimeLeftController : MonoBehaviour {
 
         gameState = GameState.getCurrentGameState();
 
-        //Fix time to 2 decimal places
-        text.text = gameState.timeLeft.ToString("F0");
+        //Display 0 if time is out
+        if (gameState.timeLeft <= 0)
+        {
+            text.text = "0";
+        }
+        else
+        {
+            //Fix time to 1 decimal place
+            text.text = gameState.timeLeft.ToString("F0");
+        }
 	}
 }

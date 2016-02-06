@@ -79,8 +79,7 @@ public class GameFinishedChecker : MonoBehaviour {
         gameOverText.SetActive(true);
 
         //Slow player to give finished effect
-        gameState.greenPlayer.speed = gameState.greenPlayer.speed / 2f;
-        gameState.pinkPlayer.speed = gameState.pinkPlayer.speed / 2f;
+        modifyGameSpeed(0.5f);
 
         var originalTimeScale = Time.timeScale;
         Time.timeScale = gameOverTimeScale;
@@ -89,8 +88,7 @@ public class GameFinishedChecker : MonoBehaviour {
         yield return new WaitForSeconds(showGameOverDuration);
 
         //Slow player to give finished effect
-        gameState.greenPlayer.speed = gameState.greenPlayer.speed * 2f;
-        gameState.pinkPlayer.speed = gameState.pinkPlayer.speed * 2f;
+        modifyGameSpeed(2f);
 
         //Remove reference to avoid breaking things
         gameState.greenPlayer = null;
@@ -100,5 +98,17 @@ public class GameFinishedChecker : MonoBehaviour {
         Time.timeScale = originalTimeScale;
 
         Application.LoadLevel(afterMatchScene);
+    }
+
+    /// <summary>
+    /// Modifies all the player speeds by a constant
+    /// </summary>
+    /// <param name="multiplier">value to multiply all speeds by</param>
+    void modifyGameSpeed(float multiplier)
+    {
+        gameState.greenPlayer.stage1Speed = gameState.greenPlayer.stage1Speed * multiplier;
+        gameState.greenPlayer.stage2Speed = gameState.greenPlayer.stage2Speed * multiplier;
+        gameState.pinkPlayer.stage1Speed = gameState.pinkPlayer.stage1Speed * multiplier;
+        gameState.pinkPlayer.stage2Speed = gameState.pinkPlayer.stage2Speed * multiplier;
     }
 }

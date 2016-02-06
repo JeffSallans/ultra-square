@@ -83,7 +83,7 @@ public class Evade : MonoBehaviour {
             if (!playerMovement.enabled && PRIVATE_timeUntilReady < cooldown - evadeDuration)
             {
                 playerMovement.enabled = true;
-                player.speed *= -1;
+                //player.speed *= -1;
             }
 
             PRIVATE_timeUntilReady -= Time.deltaTime;

@@ -32,7 +32,49 @@ public class Player : MonoBehaviour {
     /// <summary>
     /// How fast the player should move
     /// </summary>
-    public float speed;
+    public float stage1Speed;
+
+    /// <summary>
+    /// How fast the player should move with 2 or less health
+    /// </summary>
+    public float stage2Speed;
+
+    /// <summary>
+    /// The speed the player should be moving if stamina is used up
+    /// </summary>
+    public float noStaminaSpeed;
+
+    /// <summary>
+    /// Getter for speed of the player depending on the conditions
+    /// </summary>
+    public float speed
+    {
+        get
+        {
+            if (distanceCanTravel <= 0)
+            {
+                return noStaminaSpeed;
+            }
+            else if (hitsLeft <= 2)
+            {
+                return stage2Speed;
+            }
+            else
+            {
+                return stage1Speed;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Current displance player can move before resting
+    /// </summary>
+    public float distanceCanTravel;
+
+    /// <summary>
+    /// When fully rested, max distance player can move before resting
+    /// </summary>
+    public float maxDistanceCanTravel;
 
     /// <summary>
     /// Do not modify this variable only for debugging purposes
@@ -52,10 +94,6 @@ public class Player : MonoBehaviour {
             {
                 animator.SetTrigger("toGreen");
             }
-            //if (value == PlayerColor.Yellow)
-            //{
-            //    animator.SetTrigger("toYellow");
-            //}
             if (value == PlayerColor.Pink)
             {
                 animator.SetTrigger("toPink");
@@ -88,7 +126,6 @@ public class Player : MonoBehaviour {
         {
             PRIVATE_isInvulnerable = value;
             animator.SetBool("isInvulnerable", value);
-
 
             if (PRIVATE_isInvulnerable)
             {
