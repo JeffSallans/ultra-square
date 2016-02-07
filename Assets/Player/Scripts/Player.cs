@@ -51,11 +51,7 @@ public class Player : MonoBehaviour {
     {
         get
         {
-            if (distanceCanTravel <= 0)
-            {
-                return noStaminaSpeed;
-            }
-            else if (hitsLeft <= 2)
+            if (hitsLeft <= 2)
             {
                 return stage2Speed;
             }
@@ -65,16 +61,6 @@ public class Player : MonoBehaviour {
             }
         }
     }
-
-    /// <summary>
-    /// Current displance player can move before resting
-    /// </summary>
-    public float distanceCanTravel;
-
-    /// <summary>
-    /// When fully rested, max distance player can move before resting
-    /// </summary>
-    public float maxDistanceCanTravel;
 
     /// <summary>
     /// Do not modify this variable only for debugging purposes
