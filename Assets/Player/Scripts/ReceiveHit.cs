@@ -9,7 +9,7 @@ using System.Collections;
 public class ReceiveHit : MonoBehaviour {
 
     private Player player;
-
+    
 	// Use this for initialization
 	void Start () {
         player = gameObject.GetComponent<Player>();
@@ -32,14 +32,9 @@ public class ReceiveHit : MonoBehaviour {
         if (slowDownPickup != null)
         {
             var gameState = GameState.getCurrentGameState();
-
             var targetPlayer = gameState.getOpponent(player);
 
-            StartCoroutine(activateSlowDown(targetPlayer, 
-                slowDownPickup.flatSpeedReduction, slowDownPickup.speedRecutionDuration));
-
-            //Destroy the used slow down pickup
-            Destroy(attackBox.gameObject);
+            StartCoroutine(activateSlowDown(targetPlayer, slowDownPickup));
         }
         else {
 
@@ -52,10 +47,33 @@ public class ReceiveHit : MonoBehaviour {
         }
     }
 
-    IEnumerator activateSlowDown(Player target, float speedReduceBy, float reductionDuration)
+    /// <summary>
+    /// Coroutine function that calls logic when a player picks up slowdown.
+    /// </summary>
+    /// <param name="target">Player that did not pickup slowdown</param>
+    /// <param name="slowDown">Slow down data class</param>
+    /// <returns>Enumerator to be used by coroutines</returns>
+    IEnumerator activateSlowDown(Player target, SlowDown slowDown)
     {
-        target.speed -= speedReduceBy;
-        yield return new WaitForSeconds(reductionDuration);
-        target.speed += speedReduceBy;
+        //Show picked up
+        slowDown.gameObject.GetComponent<Animator>().SetTrigger("pickupHit");
+        slowDown.gameObject.GetComponent<Animator>().SetTrigger("hide");
+
+        //Don't trigger collider again
+        slowDown.gameObject.GetComponent<Collider2D>().enabled = false;
+
+        //Check if there is a slowdown icon on the player
+        var slowDownIconOnPlayerAnimator = target.gameObject.transform.Find("SlowDownIcon").gameObject.GetComponent<Animator>();
+        slowDownIconOnPlayerAnimator.SetTrigger("fadein");
+
+        //Slow down picked up logic
+        target.speed -= slowDown.flatSpeedReduction;
+        yield return new WaitForSeconds(slowDown.speedRecutionDuration - slowDown.speedRecutionWarningDuration);
+
+        //Show user slowdown is almost up
+        slowDownIconOnPlayerAnimator.SetTrigger("activeFinishing");
+        yield return new WaitForSeconds(slowDown.speedRecutionWarningDuration);
+
+        target.speed += slowDown.flatSpeedReduction;
     }
 }

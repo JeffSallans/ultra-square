@@ -18,8 +18,13 @@ public class SlowDown : MonoBehaviour {
     /// </summary>
     public float speedRecutionDuration;
 
-	// Use this for initialization
-	void Start () {
+    /// <summary>
+    /// How long the slowdown indicates it will be removed soon
+    /// </summary>
+    public float speedRecutionWarningDuration;
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
