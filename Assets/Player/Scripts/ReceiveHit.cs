@@ -28,12 +28,34 @@ public class ReceiveHit : MonoBehaviour {
         //Cannot hit invulnerable
         if (player.isInvulnerable) return;
 
-        player.hitsLeft--;
-        player.isInvulnerable = true;
+        var slowDownPickup = attackBox.gameObject.GetComponent<SlowDown>();
+        if (slowDownPickup != null)
+        {
+            var gameState = GameState.getCurrentGameState();
 
-        var animator = gameObject.GetComponent<Animator>();
+            var targetPlayer = gameState.getOpponent(player);
 
-        animator.SetTrigger("playerHit");
+            StartCoroutine(activateSlowDown(targetPlayer, 
+                slowDownPickup.flatSpeedReduction, slowDownPickup.speedRecutionDuration));
 
+            //Destroy the used slow down pickup
+            Destroy(attackBox.gameObject);
+        }
+        else {
+
+            player.hitsLeft--;
+            player.isInvulnerable = true;
+
+            var animator = gameObject.GetComponent<Animator>();
+
+            animator.SetTrigger("playerHit");
+        }
+    }
+
+    IEnumerator activateSlowDown(Player target, float speedReduceBy, float reductionDuration)
+    {
+        target.speed -= speedReduceBy;
+        yield return new WaitForSeconds(reductionDuration);
+        target.speed += speedReduceBy;
     }
 }

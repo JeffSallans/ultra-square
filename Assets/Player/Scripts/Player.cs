@@ -40,9 +40,9 @@ public class Player : MonoBehaviour {
     public float stage2Speed;
 
     /// <summary>
-    /// The speed the player should be moving if stamina is used up
+    /// The speed modifications to the player
     /// </summary>
-    public float noStaminaSpeed;
+    private float speedModified = 0;
 
     /// <summary>
     /// Getter for speed of the player depending on the conditions
@@ -53,12 +53,16 @@ public class Player : MonoBehaviour {
         {
             if (hitsLeft <= 2)
             {
-                return stage2Speed;
+                return stage2Speed + speedModified;
             }
             else
             {
-                return stage1Speed;
+                return stage1Speed + speedModified;
             }
+        }
+        set
+        {
+            speedModified = value - speed;
         }
     }
 

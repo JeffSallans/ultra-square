@@ -57,6 +57,25 @@ public class GameState : MonoBehaviour {
 	}
 
     /// <summary>
+    /// Returns the opponent of the given player
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    public Player getOpponent(Player player)
+    {
+        if (player == greenPlayer)
+        {
+            return pinkPlayer;
+        }
+        else if (player == pinkPlayer)
+        {
+            return greenPlayer;
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Returns the current game state if it exists
     /// </summary>
     /// <returns></returns>
